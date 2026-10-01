@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PROFILE - Visual Mock</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      color: #e8e9f2;
+      background:
+        radial-gradient(circle at 50% 25%, rgba(91, 83, 145, 0.22), transparent 34%),
+        radial-gradient(circle at 15% 70%, rgba(50, 76, 105, 0.16), transparent 30%),
+        linear-gradient(180deg, #090b17 0%, #101426 58%, #080b13 100%);
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .8;
+      background-image:
+        radial-gradient(circle at 12% 18%, rgba(255,255,255,.8) 0 1px, transparent 2px),
+        radial-gradient(circle at 28% 31%, rgba(255,255,255,.55) 0 1px, transparent 2px),
+        radial-gradient(circle at 74% 17%, rgba(255,255,255,.7) 0 1px, transparent 2px),
+        radial-gradient(circle at 88% 38%, rgba(255,255,255,.45) 0 1px, transparent 2px),
+        radial-gradient(circle at 64% 48%, rgba(180,190,255,.6) 0 1px, transparent 2px);
+      background-size: 240px 240px;
+    }
+    .page {
+      position: relative;
+      width: min(920px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 72px 0 100px;
+    }
+    .page-header { margin-bottom: 32px; }
+    .eyebrow {
+      margin: 0 0 8px;
+      color: #aaa6cf;
+      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+      font-size: 12px;
+      letter-spacing: .28em;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(38px, 7vw, 64px);
+      font-weight: 400;
+      letter-spacing: .08em;
+    }
+    .subtitle {
+      margin: 10px 0 0;
+      color: #888da8;
+      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+      font-size: 13px;
+      letter-spacing: .12em;
+    }
+    .profile-card {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 36px;
+      padding: 28px;
+      border: 1px solid rgba(180,184,220,.16);
+      border-radius: 4px;
+      background: rgba(12,15,29,.72);
+      box-shadow: 0 24px 70px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.03);
+      backdrop-filter: blur(8px);
+    }
+    .profile-visual { min-width: 0; }
+    .image-frame {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border: 1px solid rgba(180,184,220,.18);
+      background:
+        radial-gradient(circle at 50% 45%, rgba(125,120,190,.3), transparent 42%),
+        #0b0e1a;
+    }
+    .mock-image {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity .25s ease, transform .25s ease;
+    }
+    .mock-image.is-changing { opacity: 0; transform: scale(.96); }
+    .image-one::before {
+      content: "";
+      width: 52%;
+      height: 66%;
+      border-radius: 50% 50% 44% 44%;
+      background:
+        radial-gradient(circle at 45% 35%, rgba(255,255,255,.4), transparent 8%),
+        linear-gradient(145deg, #7770a7, #292d58);
+      box-shadow: 0 0 45px rgba(121,112,188,.35);
+    }
+    .image-two {
+      background:
+        radial-gradient(circle at 30% 35%, rgba(121,150,180,.2), transparent 25%),
+        radial-gradient(circle at 70% 60%, rgba(110,92,155,.25), transparent 28%);
+    }
+    .image-two::before {
+      content: "";
+      width: 58%;
+      height: 58%;
+      border-radius: 46% 54% 60% 40%;
+      transform: rotate(-18deg);
+      background: linear-gradient(135deg, #53617a, #24253f 65%);
+      box-shadow: 24px 18px 0 rgba(108,91,157,.2), 0 0 55px rgba(83,99,140,.28);
+    }
+    .image-three {
+      background:
+        radial-gradient(circle at 50% 40%, rgba(155,142,197,.22), transparent 28%),
+        #0c1020;
+    }
+    .image-three::before {
+      content: "";
+      width: 44%;
+      height: 62%;
+      border-radius: 48% 48% 38% 38%;
+      background: linear-gradient(160deg, #9691b8, #343754 58%, #171a2d);
+      box-shadow: -28px 18px 0 rgba(71,85,119,.15), 30px -12px 0 rgba(137,117,171,.12), 0 0 60px rgba(129,118,180,.25);
+    }
+    .image-label {
+      position: absolute;
+      left: 12px;
+      bottom: 10px;
+      color: rgba(230,232,245,.65);
+      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+      font-size: 9px;
+      letter-spacing: .18em;
+    }
+    .image-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+    }
+    .image-button {
+      width: 34px;
+      height: 30px;
+      border: 1px solid rgba(180,184,220,.2);
+      color: #c8c9da;
+      background: rgba(255,255,255,.025);
+      cursor: pointer;
+    }
+    .image-button:hover {
+      background: rgba(255,255,255,.07);
+      border-color: rgba(180,184,220,.4);
+    }
+    .image-count {
+      color: #777c98;
+      font-size: 10px;
+      letter-spacing: .15em;
+    }
+    .profile-main { min-width: 0; }
+    .name-image {
+      width: min(100%, 320px);
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      border: 1px solid rgba(180,184,220,.14);
+      background:
+        radial-gradient(circle at 50% 50%, rgba(125,120,190,.18), transparent 60%),
+        rgba(255,255,255,.015);
+    }
+    .name-image span {
+      color: #777c98;
+      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+      font-size: 10px;
+      letter-spacing: .22em;
+    }
+    .profile-subname {
+      margin: 0 0 20px;
+      color: #888da8;
+      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+      font-size: 12px;
+      letter-spacing: .1em;
+    }
+    .intro {
+      margin: 0 0 28px;
+      color: #b5b8ca;
+      font-size: 13px;
+      line-height: 2;
+    }
+    .profile-info {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-top: 1px solid rgba(180,184,220,.12);
+      border-left: 1px solid rgba(180,184,220,.12);
+    }
+    .info-item {
+      min-width: 0;
+      padding: 14px 16px;
+      border-right: 1px solid rgba(180,184,220,.12);
+      border-bottom: 1px solid rgba(180,184,220,.12);
+      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+    }
+    .info-item.memo { grid-column: 1 / -1; }
+    .info-label {
+      display: block;
+      margin-bottom: 6px;
+      color: #747a99;
+      font-size: 9px;
+      letter-spacing: .2em;
+    }
+    .info-value {
+      color: #cdd0df;
+      font-size: 12px;
+      line-height: 1.7;
+      word-break: break-word;
+    }
+    .navigation {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 24px;
+      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+    }
+    .nav-button {
+      padding: 9px 14px;
+      border: 1px solid rgba(180,184,220,.14);
+      color: #7f849f;
+      background: rgba(255,255,255,.02);
+      font-size: 9px;
+      letter-spacing: .14em;
+    }
+    .nav-button.active {
+      color: #c5c7d8;
+      border-color: rgba(180,184,220,.3);
+      background: rgba(255,255,255,.05);
+    }
+    footer {
+      margin-top: 46px;
+      color: #555a73;
+      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+      font-size: 9px;
+      letter-spacing: .14em;
+      text-align: center;
+    }
+    .forest {
+      position: fixed;
+      z-index: -1;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 90px;
+      opacity: .8;
+      background:
+        linear-gradient(135deg, transparent 49%, #070a12 50%) 0 0 / 70px 70px repeat-x,
+        linear-gradient(45deg, transparent 49%, #070a12 50%) 35px 10px / 80px 80px repeat-x,
+        linear-gradient(#0a0d16, #070910);
+    }
+    @media (max-width: 700px) {
+      .page { width: min(100% - 22px, 560px); padding-top: 44px; }
+      .profile-card {
+        grid-template-columns: 1fr;
+        gap: 28px;
+        padding: 18px;
+      }
+      .profile-visual { width: min(100%, 300px); margin: 0 auto; }
+      .name-image { width: 100%; }
+      .profile-info { grid-template-columns: 1fr; }
+      .info-item.memo { grid-column: auto; }
+      .navigation { justify-content: center; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .mock-image { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="page-header">
+      <p class="eyebrow">NIGHT FOREST / PROFILE</p>
+      <h1>PROFILE</h1>
+      <p class="subtitle">この場所にいる人について</p>
+    </header>
+
+    <main>
+      <section class="profile-card">
+        <div class="profile-visual">
+          <div class="image-frame">
+            <div class="mock-image image-one" id="profileImage">
+              <span class="image-label">PROFILE IMAGE 01</span>
+            </div>
+          </div>
+          <div class="image-controls">
+            <button class="image-button" id="prevButton" aria-label="前の画像">←</button>
+            <span class="image-count" id="imageCount">01 / 03</span>
+            <button class="image-button" id="nextButton" aria-label="次の画像">→</button>
+          </div>
+        </div>
+
+        <div class="profile-main">
+          <div class="name-image">
+            <span>NAME IMAGE</span>
+          </div>
+          <p class="profile-subname">活動名などの表示</p>
+
+          <p class="intro">
+            ここにプロフィールの紹介文が入ります。<br>
+            活動していることや、この場所についての短い文章を表示します。
+          </p>
+
+          <div class="profile-info">
+            <div class="info-item">
+              <span class="info-label">CONTENTS</span>
+              <div class="info-value">音楽 / 配信 / 動画 / 創作</div>
+            </div>
+            <div class="info-item">
+              <span class="info-label">TAG</span>
+              <div class="info-value">#A</div>
+            </div>
+            <div class="info-item">
+              <span class="info-label">GENDER</span>
+              <div class="info-value">未設定</div>
+            </div>
+            <div class="info-item">
+              <span class="info-label">AGE</span>
+              <div class="info-value">未設定</div>
+            </div>
+            <div class="info-item">
+              <span class="info-label">BIRTHDAY</span>
+              <div class="info-value">00 / 00</div>
+            </div>
+            <div class="info-item memo">
+              <span class="info-label">MEMO</span>
+              <div class="info-value">ここに自由なメモが入ります。長めの文章も入れられる想定です。</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <nav class="navigation">
+        <div class="nav-button">HOME</div>
+        <div class="nav-button">SCHEDULE</div>
+        <div class="nav-button active">PROFILE</div>
+        <div class="nav-button">FAN ART</div>
+        <div class="nav-button">SNS</div>
+        <div class="nav-button">HISTORY</div>
+      </nav>
+    </main>
+
+    <footer>© VISUAL MOCK</footer>
+  </div>
+
+  <div class="forest"></div>
+
+  <script>
+    const images = ["image-one", "image-two", "image-three"];
+    let currentIndex = 0;
+
+    const profileImage = document.getElementById("profileImage");
+    const imageCount = document.getElementById("imageCount");
+
+    function showImage(index) {
+      profileImage.classList.add("is-changing");
+      setTimeout(() => {
+        profileImage.className = "mock-image " + images[index];
+        imageCount.textContent =
+          String(index + 1).padStart(2, "0") + " / " +
+          String(images.length).padStart(2, "0");
+      }, 120);
+    }
+
+    document.getElementById("nextButton").addEventListener("click", () => {
+      currentIndex = (currentIndex + 1) % images.length;
+      showImage(currentIndex);
+    });
+
+    document.getElementById("prevButton").addEventListener("click", () => {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      showImage(currentIndex);
+    });
+  </script>
+</body>
+</html>
