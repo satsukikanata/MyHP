@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>音ノ彼方 / 彩月かなた — Official Website</title>
+  <!-- 全ページ共通スタイル（相対パス） -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       背景演出: 夜の森（星、月明かり、精霊の光、霧、木々のシルエット）
+       ======================================================================== -->
+  <div class="forest-scene" aria-hidden="true">
+    <!-- 夜空のベースグラデーション -->
+    <div class="sky-layer"></div>
+
+    <!-- 上部から差し込む淡い月明かり -->
+    <div class="moonlight"></div>
+
+    <!-- 星と浮遊する淡い光（精霊）を描画するCanvas -->
+    <canvas id="forest-canvas"></canvas>
+
+    <!-- 奥の霧 -->
+    <div class="fog-layer fog-back"></div>
+
+    <!-- 奥の木々シルエット (SVG) -->
+    <div class="trees-layer trees-back">
+      <svg viewBox="0 0 1440 500" fill="none" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+        <path fill="var(--tree-layer-back)" d="
+          M0,500 L0,320 
+          L25,325 L35,280 L45,325 L65,310 L75,250 L85,315 L110,320 L125,230 L140,325 L170,305 L185,210 L200,315
+          L230,290 L245,190 L260,300 L290,280 L305,220 L320,295 L360,270 L375,180 L390,285 L430,260 L445,210
+          L460,275 L500,290 L515,230 L530,300 L570,310 L585,240 L600,315 L640,300 L655,220 L670,305 L710,290
+          L725,200 L740,295 L780,280 L795,210 L810,290 L850,270 L865,190 L880,285 L920,290 L935,220 L950,300
+          L990,280 L1005,180 L1020,295 L1060,270 L1075,210 L1090,285 L1130,290 L1145,195 L1160,300 L1200,280
+          L1215,225 L1230,295 L1270,310 L1285,215 L1300,310 L1340,300 L1355,235 L1370,305 L1410,290 L1425,240
+          L1440,280 L1440,500 Z" />
+      </svg>
+    </div>
+
+    <!-- 中間の霧 -->
+    <div class="fog-layer fog-mid"></div>
+
+    <!-- 手前の木々シルエット（画面両端から中央を包み込む自然なフレーム構図） (SVG) -->
+    <div class="trees-layer trees-front">
+      <svg viewBox="0 0 1440 600" fill="none" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+        <!-- 左側の木立ちシルエット -->
+        <path fill="var(--tree-layer-front)" d="
+          M0,600 L0,60
+          C15,80 30,120 40,150
+          L50,110 L65,170 L75,130 L90,190 L105,150 L120,230
+          L130,190 L150,260 L160,220 L180,300 L195,260 L220,350
+          L235,310 L260,390 L275,350 L310,430 L330,400 L370,470
+          L390,450 L430,510 L450,490 L500,540 L520,530 L580,560
+          L650,580 L750,590 L1440,600 Z" />
+        
+        <!-- 右側の木立ちシルエット -->
+        <path fill="var(--tree-layer-front)" d="
+          M1440,600 L1440,40
+          C1425,70 1410,110 1395,140
+          L1385,100 L1370,160 L1355,120 L1340,180 L1325,140 L1310,220
+          L1295,180 L1275,250 L1260,210 L1240,290 L1220,250 L1190,340
+          L1170,300 L1140,380 L1120,340 L1080,420 L1060,390 L1010,460
+          L990,440 L940,500 L910,480 L860,540 L820,530 L760,560
+          L700,580 L620,590 L0,600 Z" />
+
+        <!-- 樹木の幹・リアルな針葉樹ディテール（左側主幹） -->
+        <path fill="var(--tree-layer-front)" d="
+          M40,600 L45,180 L60,110 L75,180 L70,600 Z
+          M130,600 L135,240 L145,190 L155,240 L150,600 Z
+          M230,600 L235,340 L245,290 L255,340 L250,600 Z" />
+
+        <!-- 樹木の幹・リアルな針葉樹ディテール（右側主幹） -->
+        <path fill="var(--tree-layer-front)" d="
+          M1400,600 L1395,160 L1380,90 L1365,160 L1370,600 Z
+          M1300,600 L1295,230 L1285,170 L1275,230 L1280,600 Z
+          M1200,600 L1195,330 L1185,270 L1175,330 L1180,600 Z" />
+      </svg>
+    </div>
+
+    <!-- 手前の微かな霧 -->
+    <div class="fog-layer fog-front"></div>
+
+    <!-- 画面周辺の減光効果（中央の光と文字を際立たせる） -->
+    <div class="vignette-overlay"></div>
+  </div>
+
+  <!-- ========================================================================
+       メインコンテンツ（HOME）
+       ======================================================================== -->
+  <div class="site-wrapper">
+    <!-- ヘッダー（控えめなバッジ） -->
+    <header class="site-header">
+      <span class="site-badge">
+        <span class="badge-spark"></span>
+        VISUAL MOCK
+      </span>
+    </header>
+
+    <!-- ヒーローセクション（メインビジュアル） -->
+    <main class="hero-content">
+      <p class="hero-catch">音の彼方にある世界へ</p>
+
+      <h1 class="hero-title">
+        <span class="title-main">音ノ彼方</span>
+        <span class="title-divider">
+          <span class="divider-line"></span>
+          <span class="divider-spark">✦</span>
+          <span class="divider-line"></span>
+        </span>
+        <span class="title-sub">彩月かなた</span>
+      </h1>
+
+      <p class="hero-desc">
+        夜の森を訪れ、そこに浮かぶ光を辿る場所。<br class="pc-only">
+        静寂と淡い灯りの中に、活動の記録を紡ぎます。
+      </p>
+
+      <!-- 主要ナビゲーション（光を辿るメニュー） -->
+      <nav class="forest-nav" aria-label="サイト内主要ナビゲーション">
+        <ul class="nav-list">
+          <li>
+            <a href="mock.html" class="nav-item active" aria-current="page">
+              <span class="nav-spirit"></span>
+              <span class="nav-text">HOME</span>
+            </a>
+          </li>
+          <li>
+            <a href="schedule.html" class="nav-item">
+              <span class="nav-spirit"></span>
+              <span class="nav-text">SCHEDULE</span>
+            </a>
+          </li>
+          <li>
+            <a href="profile.html" class="nav-item">
+              <span class="nav-spirit"></span>
+              <span class="nav-text">PROFILE</span>
+            </a>
+          </li>
+          <li>
+            <a href="fanart.html" class="nav-item">
+              <span class="nav-spirit"></span>
+              <span class="nav-text">FAN ART</span>
+            </a>
+          </li>
+          <li>
+            <a href="sns.html" class="nav-item">
+              <span class="nav-spirit"></span>
+              <span class="nav-text">SNS</span>
+            </a>
+          </li>
+          <li>
+            <a href="history.html" class="nav-item">
+              <span class="nav-spirit"></span>
+              <span class="nav-text">HISTORY</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </main>
+
+    <!-- フッター -->
+    <footer class="site-footer">
+      <p class="footer-copy">&copy; 音ノ彼方 / 彩月かなた</p>
+      <p class="mock-notice">※ 世界観・ビジュアル確認用モック</p>
+    </footer>
+  </div>
+
+  <!-- 全ページ共通スクリプト（相対パス） -->
+  <script src="js/main.js"></script>
+</body>
+</html>
