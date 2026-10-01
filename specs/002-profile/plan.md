@@ -11,7 +11,7 @@
 ## Step 1: PROFILEモックの見た目を追加
 
 **変える場所**
-- specs/001-profile/mock.html — 新しく作る
+- specs/002-profile/mock.html — 新しく作る
 
 **すること**
 - 現在のサイトの夜の森・夜空・淡い光の雰囲気を参考に、PROFILEの見た目を1つのHTMLにまとめる。
@@ -30,7 +30,7 @@
 ## Step 2: PROFILE IMAGEの切り替えを確認
 
 **変える場所**
-- specs/001-profile/mock.html — PROFILE IMAGEのHTML・CSS・JavaScript部分
+- specs/002-profile/mock.html — PROFILE IMAGEのHTML・CSS・JavaScript部分
 
 **すること**
 - 3つのモック画像を用意する。
