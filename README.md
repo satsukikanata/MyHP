@@ -358,28 +358,20 @@ PC・スマートフォンを同等に重視する。
 
 # 技術構成
 
-## 採用候補
+## 使うもの
 
-### Next.js
+### HTML / CSS / JavaScript
 
-サイト全体のフレームワークとして採用する。
+サイト全体を、この3つだけで作る。
+
+変換(ビルド)や、追加のインストールは使わない。
+`index.html` をブラウザで開けば、そのまま見られる形にする。
 
 理由：
 
-* ページ構成を管理しやすい
-* 静的サイトとして公開しやすい
-* 将来的な機能追加に対応しやすい
-* TypeScriptとの相性が良い
-
-### TypeScript
-
-保守性を高めるためTypeScriptを使用する。
-
-### CSS
-
-基本的なスタイリングに使用する。
-
-必要に応じてCSS Modulesなどを使用する。
+* 作ったら、すぐ開いて確かめられる
+* GitHub Pages にそのまま置いて公開できる
+* 覚える道具が少ない
 
 ### GSAP
 
@@ -395,11 +387,23 @@ PC・スマートフォンを同等に重視する。
 
 などに利用する。
 
+インストールはせず、HTML に読み込みの1行を書いて使う。GSAP は無料で使える。
+
 ### Canvas / CSS Animation
 
 浮遊する光や粒子など、常時動く背景演出に使用する。
 
 必要以上にCanvasへ依存せず、CSSだけで実現できるものはCSSで実装する。
+
+## 公開
+
+GitHub Pages で、`main` の一番上のフォルダから公開する。
+
+URL は `https://satsukikanata.github.io/MyHP/` になる。
+
+* リンクや画像の場所は、先頭に `/` を付けない書き方(相対パス)にする。`/MyHP/` の下でも正しく表示されるようにするため
+* スケジュール・活動経歴・ファンアートの一覧は、`data/` の `.js` ファイルにまとめる。`index.html` を直接開いても読めるようにするため
+* 予定を変えるときは、`data/schedule.js` だけを直せばよい形にする
 
 ---
 
@@ -428,43 +432,33 @@ PC・スマートフォンを同等に重視する。
 ```text
 .
 ├── README.md
-├── public/
-│   ├── images/
-│   │   ├── backgrounds/
-│   │   ├── fanart/
-│   │   └── profile/
-│   ├── icons/
-│   └── fonts/
+├── AGENTS.md
+├── index.html        … HOME(ローディング演出もここ)
+├── schedule.html
+├── profile.html
+├── fanart.html
+├── sns.html
+├── history.html
 │
-├── src/
-│   ├── app/
-│   │   ├── page.tsx
-│   │   ├── schedule/
-│   │   ├── profile/
-│   │   ├── fanart/
-│   │   ├── sns/
-│   │   └── history/
-│   │
-│   ├── components/
-│   │   ├── LoadingScene/
-│   │   ├── ForestBackground/
-│   │   ├── SpiritLights/
-│   │   ├── Navigation/
-│   │   └── ...
-│   │
-│   ├── animations/
-│   │   ├── loading.ts
-│   │   └── ...
-│   │
-│   ├── data/
-│   │   ├── schedule.ts
-│   │   ├── fanart.ts
-│   │   └── history.ts
-│   │
-│   └── styles/
+├── css/
+│   └── style.css     … 全ページ共通の見た目
 │
-├── package.json
-└── ...
+├── js/
+│   ├── main.js       … 全ページ共通(ナビゲーション・光と粒子)
+│   ├── loading.js    … ローディング演出
+│   └── ...
+│
+├── data/
+│   ├── schedule.js
+│   ├── fanart.js
+│   └── history.js
+│
+├── images/
+│   ├── backgrounds/
+│   ├── fanart/
+│   └── profile/
+│
+└── docs/             … このホームページを紹介するページ(講座の第3章で作る)
 ```
 
 ---
@@ -473,8 +467,7 @@ PC・スマートフォンを同等に重視する。
 
 ## Phase 1 — 基本構造
 
-* [ ] Next.jsプロジェクト作成
-* [ ] TypeScript設定
+* [ ] `index.html`・`css/style.css`・`js/main.js` を作る
 * [ ] 基本レイアウト作成
 * [ ] ページ構成作成
 * [ ] ナビゲーション作成
@@ -522,8 +515,8 @@ PC・スマートフォンを同等に重視する。
 
 ## Phase 7 — 公開
 
-* [ ] ドメイン決定
-* [ ] ホスティング環境決定
+* [ ] GitHub Pages で公開する設定
+* [ ] 独自ドメインを使うか決める(使わなければ GitHub Pages の URL のまま。独自ドメインは有料)
 * [ ] OGP設定
 * [ ] favicon設定
 * [ ] SNSシェア用画像設定
@@ -549,8 +542,7 @@ PC・スマートフォンを同等に重視する。
 * [ ] 活動経歴
 * [ ] ファンアート掲載ルール
 * [ ] スケジュール管理方法
-* [ ] ドメイン
-* [ ] 公開先
+* [ ] 独自ドメインを使うか
 
 ---
 
