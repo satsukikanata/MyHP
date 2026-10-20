@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FAN ART — Visual Mock</title>
+<style>
+:root{--bg:#03060f;--text:#f0f4fc;--sub:#b2c2de;--dim:#7384a2;--line:rgba(160,205,255,.22);--panel:rgba(10,22,42,.68);--glow:rgba(140,245,225,.78);--serif:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;--sans:"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--text);font-family:var(--serif);background:radial-gradient(ellipse at 50% 5%,#14284a 0%,#071226 42%,var(--bg) 82%);overflow-x:hidden}
+body:before,body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1}
+body:before{background:radial-gradient(ellipse at 20% 75%,rgba(45,106,130,.16),transparent 35%),radial-gradient(ellipse at 80% 55%,rgba(75,77,145,.13),transparent 34%)}
+body:after{opacity:.5;background-image:radial-gradient(circle,#d8edff 1px,transparent 1.5px),radial-gradient(circle,#9cf5e1 1px,transparent 1.5px);background-size:137px 151px,211px 193px;background-position:10px 20px,80px 70px}
+.wrap{width:min(1080px,100%);margin:auto;padding:30px 28px 24px;min-height:100vh;display:flex;flex-direction:column}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.badge{font:10px var(--sans);letter-spacing:.2em;color:#9bb6d7;border:1px solid var(--line);padding:6px 10px;border-radius:99px;background:rgba(8,18,36,.55)}
+.back{color:var(--sub);font:11px var(--sans);letter-spacing:.12em;text-decoration:none}
+main{width:100%;max-width:940px;margin:38px auto 32px}
+.eyebrow{text-align:center;color:#a6d8d6;font:10px var(--sans);letter-spacing:.32em;margin:0 0 8px}
+h1{text-align:center;font-size:clamp(30px,5vw,44px);font-weight:400;letter-spacing:.18em;margin:0}
+.intro{text-align:center;color:var(--sub);font-size:13px;letter-spacing:.08em;margin:10px 0 28px}
+.rule{display:flex;align-items:center;justify-content:center;gap:12px;margin:0 auto 28px;color:#c4edeb;font-size:12px}
+.rule:before,.rule:after{content:"";height:1px;width:76px;background:linear-gradient(90deg,transparent,var(--line))}
+.rule:after{transform:rotate(180deg)}
+.gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.art-card{appearance:none;border:1px solid rgba(160,205,255,.18);border-radius:16px;padding:12px;background:linear-gradient(145deg,rgba(18,36,62,.76),rgba(5,12,25,.86));color:inherit;text-align:left;cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s;min-width:0}
+.art-card:hover,.art-card:focus-visible{transform:translateY(-4px);border-color:rgba(140,245,225,.6);box-shadow:0 0 28px rgba(91,194,197,.1);outline:none}
+.artwork{height:210px;border-radius:10px;position:relative;overflow:hidden;display:grid;place-items:center;background:var(--art-bg)}
+.artwork:before{content:"";position:absolute;width:70%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.8) 0%,var(--art-glow) 13%,transparent 70%);filter:blur(8px);opacity:.85}
+.artwork:after{content:"";position:absolute;width:44%;aspect-ratio:1;border:1px solid rgba(255,255,255,.28);border-radius:43% 57% 54% 46%;transform:rotate(30deg);box-shadow:0 0 35px var(--art-glow),inset 0 0 24px rgba(255,255,255,.12)}
+.orb{width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 0 12px #fff,0 0 28px var(--art-glow);z-index:1}
+.art-no{position:absolute;top:12px;left:13px;font:10px var(--sans);letter-spacing:.16em;color:rgba(255,255,255,.8)}
+.card-meta{padding:12px 4px 3px}
+.art-title{font-size:15px;letter-spacing:.08em;margin:0 0 5px}
+.artist{font:11px var(--sans);color:var(--sub);letter-spacing:.06em;margin:0}
+.caption{font-size:11px;color:var(--dim);margin:7px 0 0}
+.controls{display:flex;align-items:center;justify-content:center;gap:18px;margin:27px 0 0}
+.page-btn{border:1px solid var(--line);border-radius:99px;background:rgba(10,22,42,.6);color:var(--text);font:11px var(--sans);letter-spacing:.08em;padding:10px 18px;cursor:pointer;min-height:42px}
+.page-btn:hover:not(:disabled){border-color:var(--glow);background:rgba(24,48,86,.7)}
+.page-btn:disabled{opacity:.28;cursor:not-allowed}
+.page-count{font:11px var(--sans);color:var(--sub);letter-spacing:.14em;min-width:72px;text-align:center}
+.empty-state{grid-column:1/-1;text-align:center;border:1px dashed var(--line);border-radius:16px;padding:48px 16px;color:var(--sub);background:rgba(8,18,36,.35)}
+.empty-star{font-size:25px;color:#b9ece6;margin-bottom:8px;text-shadow:0 0 18px #83e9dc}
+.empty-state p{margin:0;font-size:13px;letter-spacing:.08em}
+.demo-tools{display:flex;justify-content:center;margin-top:16px}
+.demo-tools button{border:0;background:transparent;color:var(--dim);font:10px var(--sans);text-decoration:underline;text-underline-offset:4px;cursor:pointer;padding:8px}
+footer{margin-top:auto;text-align:center;color:#61738f;font:10px var(--sans);letter-spacing:.08em;padding-top:22px}
+.lightbox{position:fixed;inset:0;display:none;place-items:center;padding:22px;background:rgba(1,4,12,.88);z-index:5;backdrop-filter:blur(8px)}
+.lightbox.open{display:grid}
+.lightbox-panel{width:min(620px,100%);border:1px solid var(--line);border-radius:18px;background:#081326;padding:14px;box-shadow:0 0 60px rgba(93,185,202,.12)}
+.lightbox .artwork{height:min(55vh,390px)}
+.lightbox-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 2px 0}
+.lightbox-title{margin:0;font-size:16px;font-weight:400}
+.close{border:1px solid var(--line);border-radius:99px;background:transparent;color:var(--text);padding:8px 13px;cursor:pointer;font:11px var(--sans)}
+@media(max-width:700px){.wrap{padding:22px 16px 18px}main{margin:32px auto 26px}.intro{font-size:12px;line-height:1.9}.gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.art-card{padding:8px;border-radius:12px}.artwork{height:clamp(130px,43vw,200px)}.card-meta{padding:10px 3px 3px}.art-title{font-size:13px}.artist{font-size:10px}.caption{font-size:10px}.controls{gap:10px}.page-btn{padding:9px 12px}.rule{margin-bottom:22px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><span class="badge">VISUAL MOCK</span><a class="back" href="mock.html">✦ HOME</a></header>
+<main>
+<p class="eyebrow">A GALLERY OF LITTLE LIGHTS</p>
+<h1>FAN ART</h1>
+<p class="intro">夜の森に浮かぶ、小さな光のような作品たち。</p>
+<div class="rule" aria-hidden="true">✧</div>
+<section id="gallery" class="gallery" aria-label="ファンアートギャラリー"></section>
+<div class="controls" id="controls">
+<button class="page-btn" id="prev" type="button">← 前へ</button>
+<span class="page-count" id="page-count" aria-live="polite">01 / 02</span>
+<button class="page-btn" id="next" type="button">次へ →</button>
+</div>
+<div class="demo-tools"><button id="empty-toggle" type="button">空の表示を確認する</button></div>
+</main>
+<footer>※ 世界観・ビジュアル確認用モック</footer>
+</div>
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="作品の拡大表示">
+<div class="lightbox-panel"><div id="lightbox-art"></div><div class="lightbox-head"><div><p class="lightbox-title" id="lightbox-title"></p><p class="artist" id="lightbox-artist"></p></div><button class="close" id="close" type="button">閉じる ×</button></div></div>
+</div>
+<script>
+const artworks=[
+ {title:"月明かりのかけら",artist:"A",bg:"linear-gradient(145deg,#122f4d,#101b39 55%,#3a2852)",glow:"#8cf5e1",caption:"淡い光のスケッチ"},
+ {title:"森の奥の星",artist:"B",bg:"linear-gradient(145deg,#151d42,#30234e 58%,#102c43)",glow:"#b4c9ff",caption:"静かな夜の色"},
+ {title:"ひと粒の願い",artist:"C",bg:"linear-gradient(145deg,#182b45,#493050 58%,#102d37)",glow:"#ffe9a1",caption:"小さな灯りを描いて"},
+ {title:"霧にほどける音",artist:"D",bg:"linear-gradient(145deg,#0d3340,#202b51 55%,#392747)",glow:"#9de9ef",caption:"森をわたる風"},
+ {title:"遠い空の色",artist:"E",bg:"linear-gradient(145deg,#182c53,#273b5d 58%,#4b3152)",glow:"#d6baff",caption:"夜空を見上げて"},
+ {title:"夜明け前の光",artist:"F",bg:"linear-gradient(145deg,#182e40,#34304d 58%,#503e4b)",glow:"#ffd4b0",caption:"夢のつづき"}
+];
+const perPage=3;let page=0;let showEmpty=false;
+const gallery=document.getElementById("gallery"),prev=document.getElementById("prev"),next=document.getElementById("next"),count=document.getElementById("page-count"),controls=document.getElementById("controls"),toggle=document.getElementById("empty-toggle");
+function artworkMarkup(a,i){return '<div class="artwork" style="--art-bg:'+a.bg+';--art-glow:'+a.glow+'"><span class="art-no">LIGHT / '+String(i+1).padStart(2,"0")+'</span><span class="orb"></span></div>'}
+function render(){
+ gallery.innerHTML="";
+ const totalPages=Math.max(1,Math.ceil(artworks.length/perPage));
+ if(showEmpty||artworks.length===0){
+  gallery.innerHTML='<div class="empty-state"><div class="empty-star">✧</div><p>まだ作品はありません。<br>森に新しい光が届くのをお待ちください。</p></div>';
+  controls.hidden=true;
+ }else{
+  controls.hidden=false;page=Math.min(page,totalPages-1);
+  artworks.slice(page*perPage,page*perPage+perPage).forEach((a,index)=>{
+   const realIndex=page*perPage+index,button=document.createElement("button");
+   button.type="button";button.className="art-card";button.setAttribute("aria-label",a.title+"（作者 "+a.artist+"）を拡大");
+   button.innerHTML=artworkMarkup(a,realIndex)+'<div class="card-meta"><p class="art-title">'+a.title+'</p><p class="artist">Artist / '+a.artist+'</p><p class="caption">'+a.caption+'</p></div>';
+   button.addEventListener("click",()=>openLightbox(a,realIndex));gallery.appendChild(button);
+  });
+  count.textContent=String(page+1).padStart(2,"0")+" / "+String(totalPages).padStart(2,"0");
+  prev.disabled=page===0;next.disabled=page===totalPages-1;
+ }
+ toggle.textContent=showEmpty?"ギャラリーに戻る":"空の表示を確認する";
+}
+function openLightbox(a,i){document.getElementById("lightbox-art").innerHTML=artworkMarkup(a,i);document.getElementById("lightbox-title").textContent=a.title;document.getElementById("lightbox-artist").textContent="Artist / "+a.artist;document.getElementById("lightbox").classList.add("open");document.getElementById("close").focus()}
+function closeLightbox(){document.getElementById("lightbox").classList.remove("open")}
+prev.addEventListener("click",()=>{if(page>0){page--;render()}});
+next.addEventListener("click",()=>{if(page<Math.ceil(artworks.length/perPage)-1){page++;render()}});
+toggle.addEventListener("click",()=>{showEmpty=!showEmpty;page=0;render()});
+document.getElementById("close").addEventListener("click",closeLightbox);
+document.getElementById("lightbox").addEventListener("click",e=>{if(e.target.id==="lightbox")closeLightbox()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeLightbox()});
+render();
+</script>
+</body>
+</html>
