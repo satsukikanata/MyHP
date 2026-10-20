@@ -216,6 +216,105 @@
       line-height: 1.7;
       word-break: break-word;
     }
+    .profile-extra {
+      margin-top: 30px;
+      padding: 26px 28px;
+      border: 1px solid rgba(180,184,220,.16);
+      border-radius: 4px;
+      background: rgba(12,15,29,.62);
+      box-shadow: 0 18px 48px rgba(0,0,0,.22);
+    }
+    .section-heading {
+      margin: 0 0 18px;
+      color: #aaa6cf;
+      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: .24em;
+    }
+    .sns-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .sns-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      padding: 14px;
+      border: 1px solid rgba(180,184,220,.14);
+      background: rgba(255,255,255,.025);
+    }
+    .sns-symbol {
+      display: grid;
+      place-items: center;
+      flex: 0 0 34px;
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(180,184,220,.2);
+      border-radius: 50%;
+      color: #c5c7d8;
+      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+      font-size: 10px;
+    }
+    .sns-name {
+      color: #cdd0df;
+      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+      font-size: 11px;
+      letter-spacing: .1em;
+    }
+    .sns-description {
+      margin-top: 3px;
+      color: #777c98;
+      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+      font-size: 10px;
+      line-height: 1.6;
+    }
+    .history-list {
+      position: relative;
+      display: grid;
+      gap: 0;
+      margin-left: 5px;
+      padding-left: 24px;
+      border-left: 1px solid rgba(180,184,220,.22);
+    }
+    .history-item {
+      position: relative;
+      display: grid;
+      grid-template-columns: 70px minmax(0, 1fr);
+      gap: 16px;
+      padding: 0 0 22px;
+    }
+    .history-item:last-child { padding-bottom: 0; }
+    .history-item::before {
+      content: "";
+      position: absolute;
+      left: -29px;
+      top: 7px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #b9c9e8;
+      box-shadow: 0 0 12px rgba(170,195,245,.5);
+    }
+    .history-year {
+      color: #aaa6cf;
+      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+      font-size: 11px;
+      letter-spacing: .08em;
+    }
+    .history-event {
+      color: #cdd0df;
+      font-size: 12px;
+      line-height: 1.8;
+    }
+    .history-note {
+      margin-top: 3px;
+      color: #777c98;
+      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+      font-size: 10px;
+    }
     .navigation {
       display: flex;
       flex-wrap: wrap;
@@ -268,6 +367,9 @@
       .name-image { width: 100%; }
       .profile-info { grid-template-columns: 1fr; }
       .info-item.memo { grid-column: auto; }
+      .profile-extra { padding: 20px 18px; }
+      .sns-list { grid-template-columns: 1fr; }
+      .history-item { grid-template-columns: 54px minmax(0, 1fr); gap: 10px; }
       .navigation { justify-content: center; }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -333,6 +435,67 @@
             <div class="info-item memo">
               <span class="info-label">MEMO</span>
               <div class="info-value">ここに自由なメモが入ります。長めの文章も入れられる想定です。</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="profile-extra" aria-labelledby="snsHeading">
+        <h2 class="section-heading" id="snsHeading">SNS</h2>
+        <div class="sns-list">
+          <div class="sns-item">
+            <span class="sns-symbol" aria-hidden="true">A</span>
+            <div>
+              <p class="sns-name">SNS A</p>
+              <p class="sns-description">お知らせ・日々のこと</p>
+            </div>
+          </div>
+          <div class="sns-item">
+            <span class="sns-symbol" aria-hidden="true">B</span>
+            <div>
+              <p class="sns-name">SNS B</p>
+              <p class="sns-description">動画・配信アーカイブ</p>
+            </div>
+          </div>
+          <div class="sns-item">
+            <span class="sns-symbol" aria-hidden="true">C</span>
+            <div>
+              <p class="sns-name">SNS C</p>
+              <p class="sns-description">作品・活動のお知らせ</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="profile-extra" aria-labelledby="historyHeading">
+        <h2 class="section-heading" id="historyHeading">HISTORY</h2>
+        <div class="history-list">
+          <div class="history-item">
+            <span class="history-year">202X</span>
+            <div>
+              <p class="history-event">活動を開始</p>
+              <p class="history-note">ここに出来事の説明が入ります</p>
+            </div>
+          </div>
+          <div class="history-item">
+            <span class="history-year">202X</span>
+            <div>
+              <p class="history-event">新しい活動を開始</p>
+              <p class="history-note">ここに出来事の説明が入ります</p>
+            </div>
+          </div>
+          <div class="history-item">
+            <span class="history-year">202X</span>
+            <div>
+              <p class="history-event">イベントに参加</p>
+              <p class="history-note">ここに出来事の説明が入ります</p>
+            </div>
+          </div>
+          <div class="history-item">
+            <span class="history-year">202X</span>
+            <div>
+              <p class="history-event">活動の節目を迎える</p>
+              <p class="history-note">ここに出来事の説明が入ります</p>
             </div>
           </div>
         </div>
