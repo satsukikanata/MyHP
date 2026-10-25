@@ -211,6 +211,12 @@ html, body {
   justify-content: space-between;
   align-items: center;
   padding: 40px 24px 28px;
+}
+
+/* 入場アニメーションは中の要素（ヘッダー・本文・フッター）に付ける。
+   .site-wrapper ごと下から動かすと、動いている間だけ画面の下にはみ出して
+   スクロールバーが出たり消えたりし、中身が横にずれるため */
+.site-wrapper > * {
   animation: sceneFadeIn 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
@@ -544,7 +550,7 @@ html, body {
     scroll-behavior: auto !important;
   }
 
-  .site-wrapper {
+  .site-wrapper > * {
     opacity: 1 !important;
     transform: none !important;
   }
