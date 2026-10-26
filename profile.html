@@ -102,6 +102,107 @@
           </li>
         </ul>
       </nav>
+
+      <!-- プロフィール（画像と情報。700px以上は左右2列、700px未満は1列） -->
+      <section class="profile-card" aria-label="プロフィール">
+        <!-- プロフィール画像（2枚を前後のボタンで切り替え） -->
+        <div class="profile-visual">
+          <div class="profile-image-frame">
+            <img class="switch-image" id="profile-image" src="images/profile/profile-1.png" alt="彩月かなたのプロフィール画像（1枚目）">
+            <span class="image-fallback" aria-hidden="true"></span>
+          </div>
+          <div class="image-controls">
+            <button type="button" class="image-button" id="profile-prev" aria-label="前のプロフィール画像">←</button>
+            <span class="image-count" id="profile-count">01 / 02</span>
+            <button type="button" class="image-button" id="profile-next" aria-label="次のプロフィール画像">→</button>
+          </div>
+        </div>
+
+        <div class="profile-main">
+          <!-- 名前画像（3枚を前後のボタンで切り替え） -->
+          <div class="name-switcher">
+            <h2 class="name-image-frame">
+              <img class="switch-image" id="name-image" src="images/profile/name-1.png" alt="音ノ彼方 / 彩月かなた">
+              <span class="image-fallback" aria-hidden="true"></span>
+            </h2>
+            <div class="image-controls">
+              <button type="button" class="image-button" id="name-prev" aria-label="前の名前画像">←</button>
+              <span class="image-count" id="name-count">01 / 03</span>
+              <button type="button" class="image-button" id="name-next" aria-label="次の名前画像">→</button>
+            </div>
+          </div>
+
+          <dl class="profile-info">
+            <div class="info-item">
+              <dt class="info-label">CONTENTS</dt>
+              <dd class="info-value">ゲーム配信、雑談作業配信</dd>
+            </div>
+            <div class="info-item">
+              <dt class="info-label">TAG</dt>
+              <dd class="info-value">総合:彩月の森、配信:彩月の演奏会、切り抜き:彩月日記、FA:彩月の薗</dd>
+            </div>
+            <div class="info-item">
+              <dt class="info-label">GENDER</dt>
+              <dd class="info-value">ショタ、女の子</dd>
+            </div>
+            <div class="info-item">
+              <dt class="info-label">AGE</dt>
+              <dd class="info-value">12歳</dd>
+            </div>
+            <div class="info-item">
+              <dt class="info-label">BIRTHDAY</dt>
+              <dd class="info-value">5月9日</dd>
+            </div>
+            <div class="info-item info-memo">
+              <dt class="info-label">MEMO</dt>
+              <dd class="info-value">FN:なで民、FM:🌙🎵 みんなに楽しんでもらえる配信を目指して頑張ってます!</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- SNS（PCは3列、700px未満は1列） -->
+      <section class="profile-extra" aria-labelledby="sns-heading">
+        <h2 class="section-heading" id="sns-heading">SNS</h2>
+        <ul class="sns-list">
+          <li>
+            <a class="sns-item" href="https://www.youtube.com/@otonokanata" target="_blank" rel="noopener noreferrer">
+              <span class="sns-symbol" aria-hidden="true">YT</span>
+              <span class="sns-text">
+                <span class="sns-service">YouTube</span>
+                <span class="sns-account">音ノ彼方/彩月かなた🌙🎵</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="sns-item" href="https://twitter.com/satsuki24_V" target="_blank" rel="noopener noreferrer">
+              <span class="sns-symbol" aria-hidden="true">X</span>
+              <span class="sns-text">
+                <span class="sns-service">X</span>
+                <span class="sns-account">音ノ彼方/彩月かなた🌙🎵૮( ⊃⌯'༥'⌯)⊃</span>
+                <span class="sns-description">配信垢</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="sns-item" href="https://twitter.com/satsuki24_2" target="_blank" rel="noopener noreferrer">
+              <span class="sns-symbol" aria-hidden="true">X</span>
+              <span class="sns-text">
+                <span class="sns-service">X</span>
+                <span class="sns-account">疲れ果てた病み属性の精霊</span>
+                <span class="sns-description">サブ垢</span>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <!-- HISTORY（中身は data/history.js から作る） -->
+      <section class="profile-extra" aria-labelledby="history-heading">
+        <h2 class="section-heading" id="history-heading">HISTORY</h2>
+        <ol class="history-list" id="history-list"></ol>
+        <p class="history-empty" id="history-empty" hidden>まだ出来事はありません。</p>
+      </section>
     </main>
 
     <footer class="site-footer">
@@ -110,5 +211,126 @@
   </div>
 
   <script src="js/main.js"></script>
+  <script src="data/history.js"></script>
+  <script>
+    /* PROFILE: 画像を前後のボタンで切り替える */
+    (function () {
+      'use strict';
+
+      /* 番号を「01 / 03」の形にする */
+      function formatCount(index, total) {
+        return String(index + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+      }
+
+      /*
+       * 切り替えの仕組み（名前画像・プロフィール画像で共通）
+       * 画像が読み込めないときは枠を残したまま画像を隠し、代わりに代替テキストを出す
+       */
+      function setupSwitcher(options) {
+        var img = document.getElementById(options.imageId);
+        var count = document.getElementById(options.countId);
+        var fallback = img.parentNode.querySelector('.image-fallback');
+        var frame = img.parentNode;
+        var images = options.images;
+        var current = 0;
+
+        function markMissing() {
+          frame.classList.add('is-missing');
+          fallback.textContent = img.alt;
+        }
+
+        img.addEventListener('error', markMissing);
+        img.addEventListener('load', function () {
+          frame.classList.remove('is-missing');
+        });
+
+        /* ページを開いた時点で、すでに読み込みに失敗していた場合 */
+        if (img.complete && img.naturalWidth === 0) {
+          markMissing();
+        }
+
+        function show(index) {
+          current = (index + images.length) % images.length; /* 端まで行ったら反対の端へ */
+          frame.classList.remove('is-missing');
+          img.alt = images[current].alt;
+          img.src = images[current].src;
+          count.textContent = formatCount(current, images.length);
+        }
+
+        document.getElementById(options.prevId).addEventListener('click', function () {
+          show(current - 1);
+        });
+        document.getElementById(options.nextId).addEventListener('click', function () {
+          show(current + 1);
+        });
+      }
+
+      setupSwitcher({
+        imageId: 'name-image',
+        countId: 'name-count',
+        prevId: 'name-prev',
+        nextId: 'name-next',
+        images: [
+          { src: 'images/profile/name-1.png', alt: '音ノ彼方 / 彩月かなた' },
+          { src: 'images/profile/name-2.png', alt: '音ノ彼方 / 彩月かなた' },
+          { src: 'images/profile/name-3.png', alt: '音ノ彼方 / 彩月かなた' }
+        ]
+      });
+
+      setupSwitcher({
+        imageId: 'profile-image',
+        countId: 'profile-count',
+        prevId: 'profile-prev',
+        nextId: 'profile-next',
+        images: [
+          { src: 'images/profile/profile-1.png', alt: '彩月かなたのプロフィール画像（1枚目）' },
+          { src: 'images/profile/profile-2.png', alt: '彩月かなたのプロフィール画像（2枚目）' }
+        ]
+      });
+    })();
+
+    /* PROFILE: HISTORY を data/history.js の一覧から作る */
+    (function () {
+      'use strict';
+
+      var list = document.getElementById('history-list');
+      var empty = document.getElementById('history-empty');
+      var items = (typeof historyItems !== 'undefined' && Array.isArray(historyItems)) ? historyItems.slice() : [];
+
+      /* 「2022/8/1」を 20220801 のような数にして、日付の順に並べる */
+      function dateToNumber(date) {
+        var parts = String(date).split('/');
+        return Number(parts[0]) * 10000 + Number(parts[1] || 0) * 100 + Number(parts[2] || 0);
+      }
+
+      items.sort(function (a, b) {
+        return dateToNumber(a.date) - dateToNumber(b.date);
+      });
+
+      /* 一覧が空のときは、枠を出さずに「まだ出来事はありません。」だけを出す */
+      if (items.length === 0) {
+        list.hidden = true;
+        empty.hidden = false;
+        return;
+      }
+
+      items.forEach(function (item) {
+        var li = document.createElement('li');
+        li.className = 'history-item';
+
+        var date = document.createElement('span');
+        date.className = 'history-date';
+        date.textContent = item.date; /* 文字として入れる（HTML としては読まない） */
+
+        var event = document.createElement('span');
+        event.className = 'history-event';
+        event.textContent = item.event;
+
+        li.appendChild(date);
+        li.appendChild(event);
+        list.appendChild(li);
+      });
+    })();
+  </script>
 </body>
 </html>
