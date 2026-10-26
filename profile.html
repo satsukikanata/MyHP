@@ -196,6 +196,13 @@
           </li>
         </ul>
       </section>
+
+      <!-- HISTORY（中身は data/history.js から作る） -->
+      <section class="profile-extra" aria-labelledby="history-heading">
+        <h2 class="section-heading" id="history-heading">HISTORY</h2>
+        <ol class="history-list" id="history-list"></ol>
+        <p class="history-empty" id="history-empty" hidden>まだ出来事はありません。</p>
+      </section>
     </main>
 
     <footer class="site-footer">
@@ -204,6 +211,7 @@
   </div>
 
   <script src="js/main.js"></script>
+  <script src="data/history.js"></script>
   <script>
     /* PROFILE: 画像を前後のボタンで切り替える */
     (function () {
@@ -278,6 +286,49 @@
           { src: 'images/profile/profile-1.png', alt: '彩月かなたのプロフィール画像（1枚目）' },
           { src: 'images/profile/profile-2.png', alt: '彩月かなたのプロフィール画像（2枚目）' }
         ]
+      });
+    })();
+
+    /* PROFILE: HISTORY を data/history.js の一覧から作る */
+    (function () {
+      'use strict';
+
+      var list = document.getElementById('history-list');
+      var empty = document.getElementById('history-empty');
+      var items = (typeof historyItems !== 'undefined' && Array.isArray(historyItems)) ? historyItems.slice() : [];
+
+      /* 「2022/8/1」を 20220801 のような数にして、日付の順に並べる */
+      function dateToNumber(date) {
+        var parts = String(date).split('/');
+        return Number(parts[0]) * 10000 + Number(parts[1] || 0) * 100 + Number(parts[2] || 0);
+      }
+
+      items.sort(function (a, b) {
+        return dateToNumber(a.date) - dateToNumber(b.date);
+      });
+
+      /* 一覧が空のときは、枠を出さずに「まだ出来事はありません。」だけを出す */
+      if (items.length === 0) {
+        list.hidden = true;
+        empty.hidden = false;
+        return;
+      }
+
+      items.forEach(function (item) {
+        var li = document.createElement('li');
+        li.className = 'history-item';
+
+        var date = document.createElement('span');
+        date.className = 'history-date';
+        date.textContent = item.date; /* 文字として入れる（HTML としては読まない） */
+
+        var event = document.createElement('span');
+        event.className = 'history-event';
+        event.textContent = item.event;
+
+        li.appendChild(date);
+        li.appendChild(event);
+        list.appendChild(li);
       });
     })();
   </script>

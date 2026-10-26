@@ -814,6 +814,59 @@ html, body {
   font-size: 0.75rem;
 }
 
+/* --- HISTORY（タイムライン） --- */
+.history-list {
+  list-style: none;
+  margin-left: 5px;
+  padding-left: 24px;
+  border-left: 1px solid rgba(160, 205, 255, 0.22);
+}
+
+.history-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 16px;
+  padding-bottom: 22px;
+}
+
+.history-item:last-child {
+  padding-bottom: 0;
+}
+
+/* 線の上に浮かぶ小さな光 */
+.history-item::before {
+  content: "";
+  position: absolute;
+  left: -29px;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--spirit-cyan);
+  box-shadow: 0 0 12px var(--spirit-cyan);
+}
+
+.history-date {
+  color: var(--text-sub);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  line-height: 1.9;
+}
+
+.history-event {
+  color: var(--text-main);
+  font-size: 0.9rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.history-empty {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
 /* --- PROFILE: 700px未満は1列 --- */
 @media (max-width: 699px) {
   .profile-card {
@@ -843,5 +896,10 @@ html, body {
 
   .sns-list {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .history-item {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
   }
 }
