@@ -105,8 +105,17 @@
 
       <!-- プロフィール（画像と情報。700px以上は左右2列、700px未満は1列） -->
       <section class="profile-card" aria-label="プロフィール">
+        <!-- プロフィール画像（2枚を前後のボタンで切り替え） -->
         <div class="profile-visual">
-          <div class="profile-image-frame"></div>
+          <div class="profile-image-frame">
+            <img class="switch-image" id="profile-image" src="images/profile/profile-1.png" alt="彩月かなたのプロフィール画像（1枚目）">
+            <span class="image-fallback" aria-hidden="true"></span>
+          </div>
+          <div class="image-controls">
+            <button type="button" class="image-button" id="profile-prev" aria-label="前のプロフィール画像">←</button>
+            <span class="image-count" id="profile-count">01 / 02</span>
+            <button type="button" class="image-button" id="profile-next" aria-label="次のプロフィール画像">→</button>
+          </div>
         </div>
 
         <div class="profile-main">
@@ -221,6 +230,17 @@
           { src: 'images/profile/name-1.png', alt: '音ノ彼方 / 彩月かなた' },
           { src: 'images/profile/name-2.png', alt: '音ノ彼方 / 彩月かなた' },
           { src: 'images/profile/name-3.png', alt: '音ノ彼方 / 彩月かなた' }
+        ]
+      });
+
+      setupSwitcher({
+        imageId: 'profile-image',
+        countId: 'profile-count',
+        prevId: 'profile-prev',
+        nextId: 'profile-next',
+        images: [
+          { src: 'images/profile/profile-1.png', alt: '彩月かなたのプロフィール画像（1枚目）' },
+          { src: 'images/profile/profile-2.png', alt: '彩月かなたのプロフィール画像（2枚目）' }
         ]
       });
     })();
