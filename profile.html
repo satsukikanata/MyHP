@@ -110,6 +110,19 @@
         </div>
 
         <div class="profile-main">
+          <!-- 名前画像（3枚を前後のボタンで切り替え） -->
+          <div class="name-switcher">
+            <h2 class="name-image-frame">
+              <img class="switch-image" id="name-image" src="images/profile/name-1.png" alt="音ノ彼方 / 彩月かなた">
+              <span class="image-fallback" aria-hidden="true"></span>
+            </h2>
+            <div class="image-controls">
+              <button type="button" class="image-button" id="name-prev" aria-label="前の名前画像">←</button>
+              <span class="image-count" id="name-count">01 / 03</span>
+              <button type="button" class="image-button" id="name-next" aria-label="次の名前画像">→</button>
+            </div>
+          </div>
+
           <dl class="profile-info">
             <div class="info-item">
               <dt class="info-label">CONTENTS</dt>
@@ -146,5 +159,71 @@
   </div>
 
   <script src="js/main.js"></script>
+  <script>
+    /* PROFILE: 画像を前後のボタンで切り替える */
+    (function () {
+      'use strict';
+
+      /* 番号を「01 / 03」の形にする */
+      function formatCount(index, total) {
+        return String(index + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+      }
+
+      /*
+       * 切り替えの仕組み（名前画像・プロフィール画像で共通）
+       * 画像が読み込めないときは枠を残したまま画像を隠し、代わりに代替テキストを出す
+       */
+      function setupSwitcher(options) {
+        var img = document.getElementById(options.imageId);
+        var count = document.getElementById(options.countId);
+        var fallback = img.parentNode.querySelector('.image-fallback');
+        var frame = img.parentNode;
+        var images = options.images;
+        var current = 0;
+
+        function markMissing() {
+          frame.classList.add('is-missing');
+          fallback.textContent = img.alt;
+        }
+
+        img.addEventListener('error', markMissing);
+        img.addEventListener('load', function () {
+          frame.classList.remove('is-missing');
+        });
+
+        /* ページを開いた時点で、すでに読み込みに失敗していた場合 */
+        if (img.complete && img.naturalWidth === 0) {
+          markMissing();
+        }
+
+        function show(index) {
+          current = (index + images.length) % images.length; /* 端まで行ったら反対の端へ */
+          frame.classList.remove('is-missing');
+          img.alt = images[current].alt;
+          img.src = images[current].src;
+          count.textContent = formatCount(current, images.length);
+        }
+
+        document.getElementById(options.prevId).addEventListener('click', function () {
+          show(current - 1);
+        });
+        document.getElementById(options.nextId).addEventListener('click', function () {
+          show(current + 1);
+        });
+      }
+
+      setupSwitcher({
+        imageId: 'name-image',
+        countId: 'name-count',
+        prevId: 'name-prev',
+        nextId: 'name-next',
+        images: [
+          { src: 'images/profile/name-1.png', alt: '音ノ彼方 / 彩月かなた' },
+          { src: 'images/profile/name-2.png', alt: '音ノ彼方 / 彩月かなた' },
+          { src: 'images/profile/name-3.png', alt: '音ノ彼方 / 彩月かなた' }
+        ]
+      });
+    })();
+  </script>
 </body>
 </html>
