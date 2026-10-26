@@ -719,6 +719,101 @@ html, body {
   overflow-wrap: anywhere;
 }
 
+/* --- PROFILE の下の欄（SNS・HISTORY）の枠 --- */
+.profile-extra {
+  width: 100%;
+  margin-top: 30px;
+  padding: 26px 28px;
+  text-align: left;
+  border: 1px solid var(--ui-border);
+  border-radius: 4px;
+  background: rgba(8, 16, 32, 0.62);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.section-heading {
+  margin-bottom: 18px;
+  color: var(--text-sub);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.24em;
+}
+
+/* --- SNS（カード） --- */
+.sns-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.sns-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+  min-width: 0;
+  padding: 14px;
+  color: var(--text-main);
+  text-decoration: none;
+  border: 1px solid rgba(160, 205, 255, 0.14);
+  background: rgba(255, 255, 255, 0.025);
+  transition: background var(--transition-normal), border-color var(--transition-normal);
+}
+
+.sns-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--ui-hover-border);
+}
+
+.sns-item:focus-visible {
+  outline: 2px solid var(--spirit-cyan);
+  outline-offset: 2px;
+}
+
+.sns-symbol {
+  display: grid;
+  place-items: center;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--ui-border);
+  border-radius: 50%;
+  color: var(--text-sub);
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  box-shadow: 0 0 10px rgba(140, 245, 225, 0.12);
+}
+
+.sns-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-family: var(--font-sans);
+}
+
+.sns-service {
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+}
+
+.sns-account {
+  color: var(--text-main);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.sns-description {
+  margin-top: 2px;
+  color: var(--text-sub);
+  font-size: 0.75rem;
+}
+
 /* --- PROFILE: 700px未満は1列 --- */
 @media (max-width: 699px) {
   .profile-card {
@@ -739,5 +834,14 @@ html, body {
 
   .name-switcher {
     width: 100%;
+  }
+
+  .profile-extra {
+    margin-top: 24px;
+    padding: 20px 18px;
+  }
+
+  .sns-list {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
