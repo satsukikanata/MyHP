@@ -563,3 +563,94 @@ html, body {
     animation: none !important;
   }
 }
+
+/* ==========================================================================
+   PROFILE ページ
+   ========================================================================== */
+
+/* --- プロフィール（画像と情報の枠） --- */
+.profile-card {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 36px;
+  width: 100%;
+  margin-top: 48px;
+  padding: 28px;
+  text-align: left;
+  border: 1px solid var(--ui-border);
+  border-radius: 4px;
+  background: rgba(8, 16, 32, 0.72);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.profile-visual,
+.profile-main {
+  min-width: 0;
+}
+
+/* プロフィール画像の枠（正方形） */
+.profile-image-frame {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border: 1px solid var(--ui-border);
+  background:
+    radial-gradient(circle at 50% 45%, rgba(120, 160, 220, 0.22), transparent 42%),
+    #070e1c;
+}
+
+/* --- プロフィール情報（2列。MEMO は横幅いっぱい） --- */
+.profile-info {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid rgba(160, 205, 255, 0.14);
+  border-left: 1px solid rgba(160, 205, 255, 0.14);
+}
+
+.info-item {
+  min-width: 0;
+  padding: 14px 16px;
+  border-right: 1px solid rgba(160, 205, 255, 0.14);
+  border-bottom: 1px solid rgba(160, 205, 255, 0.14);
+  font-family: var(--font-sans);
+}
+
+.info-item.info-memo {
+  grid-column: 1 / -1;
+}
+
+.info-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+}
+
+.info-value {
+  color: var(--text-main);
+  font-size: 0.85rem;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+/* --- PROFILE: 700px未満は1列 --- */
+@media (max-width: 699px) {
+  .profile-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    margin-top: 36px;
+    padding: 18px;
+  }
+
+  .profile-visual {
+    width: min(100%, 300px);
+    margin: 0 auto;
+  }
+
+  .profile-info {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
