@@ -563,3 +563,343 @@ html, body {
     animation: none !important;
   }
 }
+
+/* ==========================================================================
+   PROFILE ページ
+   ========================================================================== */
+
+/* --- プロフィール（画像と情報の枠） --- */
+.profile-card {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 36px;
+  width: 100%;
+  margin-top: 48px;
+  padding: 28px;
+  text-align: left;
+  border: 1px solid var(--ui-border);
+  border-radius: 4px;
+  background: rgba(8, 16, 32, 0.72);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.profile-visual,
+.profile-main {
+  min-width: 0;
+}
+
+/* プロフィール画像の枠（正方形） */
+.profile-image-frame {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border: 1px solid var(--ui-border);
+  background:
+    radial-gradient(circle at 50% 45%, rgba(120, 160, 220, 0.22), transparent 42%),
+    #070e1c;
+}
+
+/* --- 画像の切り替え（名前画像・プロフィール画像で共通） --- */
+.switch-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 画像が読み込めないとき: 画像を隠し、枠の中に代替テキストを出す */
+.image-fallback {
+  display: none;
+}
+
+.is-missing .switch-image {
+  opacity: 0;
+}
+
+.is-missing .image-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  color: var(--text-sub);
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-align: center;
+}
+
+.image-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-family: var(--font-sans);
+}
+
+.image-button {
+  width: 44px;
+  height: 36px;
+  border: 1px solid var(--ui-border);
+  color: var(--text-sub);
+  background: rgba(255, 255, 255, 0.025);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background var(--transition-normal), border-color var(--transition-normal);
+}
+
+.image-button:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(160, 205, 255, 0.4);
+}
+
+.image-button:focus-visible {
+  outline: 2px solid var(--spirit-cyan);
+  outline-offset: 2px;
+}
+
+.image-count {
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+}
+
+/* --- 名前画像 --- */
+.name-switcher {
+  width: min(100%, 320px);
+  margin-bottom: 24px;
+}
+
+.name-image-frame {
+  position: relative;
+  height: 80px;
+  border: 1px solid rgba(160, 205, 255, 0.14);
+  background:
+    radial-gradient(circle at 50% 50%, rgba(120, 160, 220, 0.14), transparent 60%),
+    rgba(255, 255, 255, 0.015);
+}
+
+/* --- プロフィール情報（2列。MEMO は横幅いっぱい） --- */
+.profile-info {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid rgba(160, 205, 255, 0.14);
+  border-left: 1px solid rgba(160, 205, 255, 0.14);
+}
+
+.info-item {
+  min-width: 0;
+  padding: 14px 16px;
+  border-right: 1px solid rgba(160, 205, 255, 0.14);
+  border-bottom: 1px solid rgba(160, 205, 255, 0.14);
+  font-family: var(--font-sans);
+}
+
+.info-item.info-memo {
+  grid-column: 1 / -1;
+}
+
+.info-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+}
+
+.info-value {
+  color: var(--text-main);
+  font-size: 0.85rem;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+/* --- PROFILE の下の欄（SNS・HISTORY）の枠 --- */
+.profile-extra {
+  width: 100%;
+  margin-top: 30px;
+  padding: 26px 28px;
+  text-align: left;
+  border: 1px solid var(--ui-border);
+  border-radius: 4px;
+  background: rgba(8, 16, 32, 0.62);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.section-heading {
+  margin-bottom: 18px;
+  color: var(--text-sub);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.24em;
+}
+
+/* --- SNS（カード） --- */
+.sns-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.sns-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+  min-width: 0;
+  padding: 14px;
+  color: var(--text-main);
+  text-decoration: none;
+  border: 1px solid rgba(160, 205, 255, 0.14);
+  background: rgba(255, 255, 255, 0.025);
+  transition: background var(--transition-normal), border-color var(--transition-normal);
+}
+
+.sns-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--ui-hover-border);
+}
+
+.sns-item:focus-visible {
+  outline: 2px solid var(--spirit-cyan);
+  outline-offset: 2px;
+}
+
+.sns-symbol {
+  display: grid;
+  place-items: center;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--ui-border);
+  border-radius: 50%;
+  color: var(--text-sub);
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  box-shadow: 0 0 10px rgba(140, 245, 225, 0.12);
+}
+
+.sns-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-family: var(--font-sans);
+}
+
+.sns-service {
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+}
+
+.sns-account {
+  color: var(--text-main);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.sns-description {
+  margin-top: 2px;
+  color: var(--text-sub);
+  font-size: 0.75rem;
+}
+
+/* --- HISTORY（タイムライン） --- */
+.history-list {
+  list-style: none;
+  margin-left: 5px;
+  padding-left: 24px;
+  border-left: 1px solid rgba(160, 205, 255, 0.22);
+}
+
+.history-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 16px;
+  padding-bottom: 22px;
+}
+
+.history-item:last-child {
+  padding-bottom: 0;
+}
+
+/* 線の上に浮かぶ小さな光 */
+.history-item::before {
+  content: "";
+  position: absolute;
+  left: -29px;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--spirit-cyan);
+  box-shadow: 0 0 12px var(--spirit-cyan);
+}
+
+.history-date {
+  color: var(--text-sub);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  line-height: 1.9;
+}
+
+.history-event {
+  color: var(--text-main);
+  font-size: 0.9rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.history-empty {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+/* --- PROFILE: 700px未満は1列 --- */
+@media (max-width: 699px) {
+  .profile-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    margin-top: 36px;
+    padding: 18px;
+  }
+
+  .profile-visual {
+    width: min(100%, 300px);
+    margin: 0 auto;
+  }
+
+  .profile-info {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .name-switcher {
+    width: 100%;
+  }
+
+  .profile-extra {
+    margin-top: 24px;
+    padding: 20px 18px;
+  }
+
+  .sns-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .history-item {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+}
